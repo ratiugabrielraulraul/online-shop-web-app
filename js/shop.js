@@ -43,8 +43,43 @@ window.Shop = {
                     </div>
                 </div>`
 
+    },
+    addProductToCart(productId) {
+        //customerId to be read from memory somehow in future
+        var customerId = 13;
+        var requestBody = {
+            customerId:customerId,
+            productId:productId
+        };
+
+        $.ajax({
+            url:Shop.API_BASE_URL + "/carts",
+            method: "PUT",
+            contentType:"application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function () {
+            //pt a naviga la o alta pagina
+            window.location.replace("cart.html")
+
+        })
+    },
+    
+    bindEvents: function () {
+
+        $('.single-product-area .row').delegate('.add_to_cart_button','click',function (event) {
+            event.preventDefault();
+
+            var productId = $(this).data('product_id');
+            Shop.addProductToCart(productId);
+
+
+        })
+        
     }
+    
+    
 
 
 };
 Shop.getProducts();
+Shop.bindEvents();
